@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Entity
-@Table(name = "item_do_pedido")
+@Table(name = "item_pedido")
 @Getter
 @Setter
 @Builder
@@ -20,9 +20,10 @@ public class ItemOrder {
     private Long itemId;
 
     @NotNull
-    @Positive
+    @Column(name = "amount")
     private Integer amount;
 
+    @Column(name = "description")
     private String description;
 
 }

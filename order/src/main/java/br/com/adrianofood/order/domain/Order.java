@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "tb_order")
@@ -21,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Order implements Serializable {
 
-
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
@@ -39,7 +40,7 @@ public class Order implements Serializable {
 
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
-    private List<ItemOrder> itemOrders = new ArrayList<>();
+    private List<ItemOrder> itemOrders;
 
     @PrePersist
     public void prePersist() {
@@ -60,7 +61,7 @@ public class Order implements Serializable {
     }
 
     public void addItemOrder(ItemOrder itemOrder) {
-        this.itemOrders = new ArrayList<>();
+        this.itemOrders = new ArrayList<ItemOrder>();
         this.itemOrders.add(itemOrder);
     }
 

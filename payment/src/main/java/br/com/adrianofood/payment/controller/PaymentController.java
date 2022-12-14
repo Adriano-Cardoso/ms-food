@@ -49,4 +49,11 @@ public class PaymentController {
     public ResponseEntity<Page<PaymentResponse>> listAllPayments() {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.listAllPayments());
     }
+
+    @ApiOperation(value = "envia confirmação de pagamento para o ms de pedido")
+    @PatchMapping("/{orderId}/confirmed")
+    public void confirmedPayment(@PathVariable("orderId") Long orderId){
+        paymentService.confirmPayment(orderId);
+
+    }
 }

@@ -3,7 +3,9 @@ package br.com.adrianofood.payment.service;
 import br.com.adrianofood.payment.domain.Payment;
 import br.com.adrianofood.payment.domain.dto.request.PaymentRequest;
 import br.com.adrianofood.payment.domain.dto.response.PaymentResponse;
+import br.com.adrianofood.payment.domain.enums.Status;
 import br.com.adrianofood.payment.exception.Message;
+import br.com.adrianofood.payment.http.OrderClient;
 import br.com.adrianofood.payment.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +20,9 @@ public class PaymentService {
 
     private PaymentRepository paymentRepository;
 
-    public PaymentResponse createPayment(PaymentRequest paymentRequest){
+    private OrderClient orderClient;
+
+    public PaymentResponse createPayment(PaymentRequest paymentRequest) {
 
         paymentRepository.findByName(paymentRequest.getName()).ifPresent(name -> {
             throw Message.NAME_EXISTS.asBusinessException();
@@ -30,8 +34,9 @@ public class PaymentService {
 
         return payment.toResponse();
     }
+
     @Transactional
-    public PaymentResponse updatePayment(Long paymentId, PaymentRequest paymentRequest){
+    public PaymentResponse updatePayment(Long paymentId, PaymentRequest paymentRequest) {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(Message.ID_PAYMENT_NOT_FOUND::asBusinessException);
 
@@ -40,7 +45,7 @@ public class PaymentService {
         return payment.toResponse();
     }
 
-    public Page<PaymentResponse> listAllPayments(){
+    public Page<PaymentResponse> listAllPayments() {
         int limit = 3;
         int page = 0;
 
@@ -49,7 +54,7 @@ public class PaymentService {
         return paymentRepository.listAllPayment(pageable);
     }
 
-    public PaymentResponse deletePayment(Long paymentId){
+    public PaymentResponse deletePayment(Long paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(Message.ID_PAYMENT_NOT_FOUND::asBusinessException);
 
@@ -59,10 +64,20 @@ public class PaymentService {
     }
 
 
-    public PaymentResponse findByIdPayment(Long paymentId){
+    public PaymentResponse findByIdPayment(Long paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
                 .orElseThrow(Message.ID_PAYMENT_NOT_FOUND::asBusinessException);
         return payment.toResponse();
     }
+
+    public void confirmPayment(Long orderId) {
+        Payment payment = paymentRepository.findById(orderId)
+                .orElseThrow(Message.ID_PAYMENT_NOT_FOUND::asBusinessException);
+        payment.setStatus(Status.CONFIRMED);
+
+        paymentRepository.save(payment);
+        orderClient.updatePayment(payment.getOrderId());
+    }
+
 
 }

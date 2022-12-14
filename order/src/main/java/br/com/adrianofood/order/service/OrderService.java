@@ -7,17 +7,21 @@ import br.com.adrianofood.order.domain.dto.request.OrderRequest;
 import br.com.adrianofood.order.domain.dto.request.StatusRequest;
 import br.com.adrianofood.order.domain.dto.response.OrderResponse;
 import br.com.adrianofood.order.exception.Message;
+import br.com.adrianofood.order.repository.ItemOrderRepository;
 import br.com.adrianofood.order.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class OrderService {
 
     private OrderRepository orderRepository;
+
+    private ItemOrderRepository itemOrderRepository;
 
     private ItemOrderService itemOrderService;
 
@@ -39,7 +43,7 @@ public class OrderService {
 //            throw Message.ORDER_EXISTS.asBusinessException();
 //        });
 
-        ItemOrder itemOrder = this.itemOrderService.findById(orderRequest.getItemOrderId());
+        ItemOrder itemOrder = itemOrderService.findById(orderRequest.getItemOrderId());
 
         Order order = Order.of(orderRequest);
 
@@ -67,10 +71,12 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(Message.ID_ORDER_NOT_FOUND::asBusinessException);
 
-        StatusRequest statusRequest = new StatusRequest();
+        if (order.getStatus().equals(Status.REALIZADO)){
+            order.setStatus(Status.PAGO);
+            orderRepository.atualizaStatus(Status.PAGO, order);
+        }
 
-        statusRequest.setStatus(Status.PAGO);
 
-        order.updateStatus(statusRequest);
+
     }
 }

@@ -80,4 +80,9 @@ public class Payment implements Serializable {
         this.name = paymentRequest.getName();
 
     }
+
+    public void setStatusPayment(Status status) {
+        Payment payment = new Payment();
+        payment.setStatus(status);
+    }
 }

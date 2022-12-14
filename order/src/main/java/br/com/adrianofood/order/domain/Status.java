@@ -8,7 +8,7 @@ public enum Status {
     CANCELADO,
     PAGO,
     NAO_AUTORIZADO,
-    CONFIRMADO,
+    CONFIRMED,
     PRONTO,
     SAIU_PARA_ENTREGA,
     ENTREGUE;

@@ -14,7 +14,7 @@ public class ItemOrderService {
 
     public ItemOrder findById(Long itemOrderId){
        return itemOrderRepository.findById(itemOrderId)
-                .orElseThrow(()-> Message.ID_ORDER_NOT_FOUND.asBusinessException());
+                .orElseThrow(Message.ID_ORDER_NOT_FOUND::asBusinessException);
 
 
 
