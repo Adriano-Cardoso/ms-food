@@ -1,6 +1,7 @@
 package br.com.adrianofood.payment.exception;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+
 public class ExceptionResolver {
 
     public static String getRootException(Throwable ex) {

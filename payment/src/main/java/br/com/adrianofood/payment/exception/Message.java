@@ -6,22 +6,22 @@ public enum Message {
     ID_PAYMENT_NOT_FOUND("Id do pagamento não existe", HttpStatus.NOT_FOUND),
     NAME_EXISTS("O nome procurado já existe em nossa base ", HttpStatus.BAD_REQUEST);
 
-    private String value;
+    private final String value;
     private String description;
     private HttpStatus statusCode;
 
-    private Message(String value, HttpStatus statusCode) {
+    Message(String value, HttpStatus statusCode) {
         this.value = value;
         this.statusCode = statusCode;
     }
 
-    private Message(String value, String description, HttpStatus statusCode) {
+    Message(String value, String description, HttpStatus statusCode) {
         this.value = value;
         this.description = description;
         this.statusCode = statusCode;
     }
 
-    private Message(String value) {
+    Message(String value) {
         this.value = value;
     }
 
