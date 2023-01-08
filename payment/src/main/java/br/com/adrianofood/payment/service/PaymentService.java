@@ -6,6 +6,7 @@ import br.com.adrianofood.payment.domain.dto.response.PaymentResponse;
 import br.com.adrianofood.payment.exception.Message;
 import br.com.adrianofood.payment.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
