@@ -26,7 +26,7 @@ public class PaymentController {
     @ApiOperation(value = "Cria um novo pagamento")
     @PostMapping("/create")
     public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest paymentRequest) {
-        rabbitTemplate.send("pagamento.concluido", new Message(("Criei um pagamento" + paymentRequest.getCode()).getBytes()));
+        rabbitTemplate.convertAndSend("pagamento.concluido", paymentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(paymentRequest));
     }
 
