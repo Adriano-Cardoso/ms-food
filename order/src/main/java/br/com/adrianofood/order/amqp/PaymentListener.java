@@ -13,16 +13,13 @@ public class PaymentListener {
 
         String message = """
                 Nome: %s
-                Dados do pagemnto: %s
                 Número do pedido: %s
                 Valor R$: %s
-                Status %s
                 """.formatted(
                         paymentDto.getName(),
-                        paymentDto.getPaymentId(),
                         paymentDto.getOrderId(),
-                        paymentDto.getValue(),
-                        paymentDto.getStatusPayment());
+                        paymentDto.getValue());
+
 
         System.out.println("Recebi a messagem " + message.toString());
     }
